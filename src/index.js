@@ -182,6 +182,7 @@ class WarmUp {
         ? config.environment
         : defaultOpts.environment,
       prewarm: (config.prewarm !== undefined) ? config.prewarm : defaultOpts.prewarm,
+      runtime: (config.runtime !== undefined) ? config.runtime : defaultOpts.runtime
     };
     /* eslint-enable no-nested-ternary */
   }
@@ -246,6 +247,7 @@ class WarmUp {
       environment: Object.keys(service.provider.environment || [])
         .reduce((obj, k) => ({ ...obj, [k]: undefined }), {}),
       prewarm: false,
+      runtime: 'nodejs18.x'
     };
 
     const functionDefaultOpts = {
@@ -383,7 +385,7 @@ module.exports.warmUp = async (event, context) => {
       handler: warmupOpts.pathHandler,
       memorySize: warmupOpts.memorySize,
       name: warmupOpts.name,
-      runtime: 'nodejs12.x',
+      runtime: warmupOpts.runtime || 'nodejs18.x',
       package: warmupOpts.package,
       timeout: warmupOpts.timeout,
       ...(Object.keys(warmupOpts.environment).length
